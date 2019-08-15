@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package com.nwp.model;
+
+option java_multiple_files = true;
+option java_package = "com.nwp.model";
+
+message User{
+    string first_name = 1;
+    string last_name = 2;
+}
+
+message Greeting{
+    string message = 1;
+}

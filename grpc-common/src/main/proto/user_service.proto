@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+
+
+package com.nwp.service;
+
+option java_multiple_files = true;
+option java_package = "com.nwp.service";
+
+import "user_model.proto";
+
+service UserServiceGrpc{
+    rpc sayHello(com.nwp.model.User) returns(com.nwp.model.Greeting);
+}
