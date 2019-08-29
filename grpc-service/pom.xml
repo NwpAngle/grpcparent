@@ -15,14 +15,30 @@
 
     <properties>
         <java.version>1.8</java.version>
-
+        <db.driver>com.mysql.jdbc.Driver</db.driver>
+        <db.host>127.0.0.1</db.host>
+        <db.port>3306</db.port>
+        <db.username>root</db.username>
+        <db.password>root</db.password>
+        <db.schema>mydatabase</db.schema>
+        <db.url>jdbc:mysql://${db.host}:${db.port}</db.url>
         <grpc.stater.version>1.3.0-RELEASE</grpc.stater.version>
 
     </properties>
 
     <dependencies>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
+            <version>2.1.1.RELEASE</version>
+        </dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>6.0.6</version>
+        </dependency>
 
         <dependency>
             <groupId>com.example</groupId>
@@ -53,13 +69,70 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+
+    <profiles>
+        <profile>
+            <id>codegen</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+
+                    <plugin>
+
+
+                    <groupId>org.jooq</groupId>
+                    <artifactId>jooq-codegen-maven</artifactId>
+                    <version>3.10.8</version>
+
+                    <!-- The plugin should hook into the generate goal -->
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+
+                    <!-- Manage the plugin's dependency. In this example, we'll use a PostgreSQL database -->
+
+
+                    <!-- Specify the plugin configuration.
+                         The configuration format is the same as for the standalone code generator -->
+                    <configuration>
+
+                        <jdbc>
+                            <driver>${db.driver}</driver>
+                            <url>${db.url}</url>
+                            <user>${db.username}</user>
+                            <password>${db.password}</password>
+                        </jdbc>
+
+                        <!-- Generator parameters -->
+                        <generator>
+                            <target>
+                                <packageName>com.example.grpcservice.user_info</packageName>
+                                <directory>src/main/java</directory>
+                            </target>
+                            <generate>
+                                <instanceFields>true</instanceFields>
+                                <pojos>true</pojos>
+                                <daos>true</daos>
+                            </generate>
+                            <database>
+                                <inputSchema>${db.schema}</inputSchema>
+                                <includes>.*</includes>
+
+                            </database>
+                        </generator>
+                    </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 
 </project>

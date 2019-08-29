@@ -1,4 +1,4 @@
-package com.example.grpcservice.service.impl;
+package com.example.grpcservice.grpc;
 
 
 import com.nwp.model.Greeting;

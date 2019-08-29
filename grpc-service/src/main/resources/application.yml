@@ -1,0 +1,18 @@
+
+grpc:
+  server:
+    port: 7052
+
+spring:
+  application:
+    name: user-grpc
+  cloud:
+    consul:
+      port: 8900
+      host: localhost
+      discovery:
+        prefer-ip-address: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydatabase
+    password: root
+    username: root
