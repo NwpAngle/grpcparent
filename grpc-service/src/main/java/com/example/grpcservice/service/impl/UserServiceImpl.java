@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
     UserDao userDao;
 
     public User getUserById(int id) {
-        UserRecord result = dslContext.select().from(Tables.USER).where(Tables.USER.ID.eq(1))
+        UserRecord result = dslContext.selectFrom(Tables.USER).where(Tables.USER.ID.eq(1))
                 .fetchOneInto(Tables.USER);
         if (result != null){
             return userDao.mapper().map(result);
