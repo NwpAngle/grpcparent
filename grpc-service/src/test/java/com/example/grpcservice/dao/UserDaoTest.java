@@ -29,7 +29,6 @@ public class UserDaoTest {
         DSLContext dslContext = DSL.using(mockConnection, SQLDialect.MYSQL);
         //UserRecord userRecord = dslContext.selectFrom(USER).fetchOneInto(USER);
         Result<UserRecord> result = dslContext.selectFrom(USER).where(USER.ID.eq(3)).fetch();
-        System.out.println(result);
     }
 
 }
