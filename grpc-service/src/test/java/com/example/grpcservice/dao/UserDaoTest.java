@@ -29,7 +29,7 @@ public class UserDaoTest {
         DSLContext dslContext = DSL.using(mockConnection, SQLDialect.MYSQL);
         //UserRecord userRecord = dslContext.selectFrom(USER).fetchOneInto(USER);
         Result<UserRecord> result = dslContext.selectFrom(USER).where(USER.ID.eq(3)).fetch();
-
+        System.out.println(result);
     }
 
 }
@@ -38,13 +38,14 @@ class MyProvider implements MockDataProvider{
 
     public MockResult[] execute(MockExecuteContext mockExecuteContext) throws SQLException {
         DSLContext create = DSL.using(SQLDialect.MYSQL);
-        MockResult[] mockResults = new MockResult[1];
+        MockResult[] mockResults = new MockResult[2];
 
         String sql = mockExecuteContext.sql();
         System.out.println("--------------------sql:"+sql);
 
         if (sql.toUpperCase().startsWith("SELECT")){
             Result<Record3<Integer, String, String>> result = create.newResult(USER.ID, USER.FIRST_NAME, USER.LAST_NAME);
+            result.add(create.newRecord(USER.ID,USER.FIRST_NAME,USER.LAST_NAME).values(1,"z","x"));
             result.add(create.newRecord(USER.ID,USER.FIRST_NAME,USER.LAST_NAME).values(1,"z","x"));
             mockResults[0] = new MockResult(1,result);
         }else {
